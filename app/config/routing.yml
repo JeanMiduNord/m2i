@@ -1,0 +1,10 @@
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+
+opCache:
+    resource: '@OpCacheBundle/Controller/'
+    type: annotation
+

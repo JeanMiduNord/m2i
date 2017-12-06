@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpCache TdB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="//www.php.net/favicon.ico">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 70px; }
+        h2 {
+            padding-top: 100px;
+            margin-top: -80px;*/
+            display: inline-block; /* required for webkit browsers */
+        }
+        .entete{
+            width:100%;
+            background-color: #ffd36c;
+            height: 110px;
+            /*vertical-align: middle;*/
+            text-align: center;
+        }
+        .posA{
+            /*position: relative;*/
+            width: 80%;
+
+        }
+        .posB{
+            /*position: relative;*/
+            width: 20%;
+            text-align: right;
+
+        }
+    </style>
+
+
+</head>
+<body data-spy="scroll" data-target="#navbar-opcache">
+
+
+<div class="container">
+    <div class="entete">
+        <table>
+            <tr>
+                <td class = "posA">
+                    <h1>OpCache TdB</h1>
+                    <p> Version PHP : {{ opc.getPhpVersion() }}  Version OpCache :  {{ opc.getOpcVersion() }}</p>
+                </td>
+                <td class = "posB">
+                    <a type="button" class="btn btn-success" href="?reset=oui" >Tout réinitialiser</a>
+                </td>
+                <td class = "posC">
+                    <a type="button" class="btn btn-success" href="?ti" >Actualiser</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 id="hits">
+             Hits: {{ opc.getHitRate() }} %</h2>
+    <div class="progress progress-striped">
+        <div class="progress-bar progress-bar-success"  style="width:{{ opc.getHitRate()}}%"> </div>
+    </div>
+
+    {% set mem =  render(controller("OpCacheBundle:Default:formatTaille",{'taille':  opc.getWastedMemory() + opc.getUsedMemory() }))  %}
+    {% set totMem =  render(controller("OpCacheBundle:Default:formatTaille",{'taille':  opc.getTotalMemory() }))  %}
+    {% set txOccup =  (mem|number_format  / totMem|number_format)*100 %}
+    <h2 id="memory">Mémoire utilisée : {{ mem }}  sur  {{ totMem }}
+
+    </h2>
+    <div class="progress progress-striped">
+        <div class="progress-bar progress-bar-success" style="width:{{ txOccup }}%" %">
+            <span class="sr-only">Free memory</span>
+        </div>
+    </div>
+
+
+    <h2 id="status">Status des fichiers utilisés ( {{ opc.getFileCount() }} )</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            {% for keys, items in  opc.getFileMemory()  %}
+                {%  set nomFic = items.fileName %}
+                {%  set tailleFic = items.fileSizeText %}
+               <tr ><th align="left"> {{ nomFic }}</th><td> {{ tailleFic }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+</div>
+
+<script src="//code.jquery.com/jquery.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</body>
+</html>
