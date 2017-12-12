@@ -11,19 +11,30 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/opc")
+     * @Route("/opc", name="accueil")
      */
     public function indexAction(Request $request)
     {
-        $paramGet = $request->query->get('reset');
+     /*   $paramGet = $request->query->get('reset');
         if ($paramGet != null and $paramGet=="oui"){
             opcache_reset();
-        }
+        }*/
         $opc = new OpCache();
 
         return $this->render('OpCacheBundle:Default:index.html.twig',[
                    'opc' => $opc]);
     }
+
+	/**
+	 * @Route("/init", name="init")
+	 */
+	public function resetAction(Request $request)
+	{
+	    opcache_reset();
+		return $this->redirectToRoute("accueil");
+	}
+
+
 
     public function formatTailleAction($taille)
     {

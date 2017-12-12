@@ -46,7 +46,7 @@
                     <p> Version PHP : {{ opc.getPhpVersion() }}  Version OpCache :  {{ opc.getOpcVersion() }}</p>
                 </td>
                 <td class = "posB">
-                    <a type="button" class="btn btn-success" href="?reset=oui" >Tout réinitialiser</a>
+                    <a type="button" class="btn btn-success" href="{{ path('init') }}" >Tout réinitialiser</a>
                 </td>
                 <td class = "posC">
                     <a type="button" class="btn btn-success" href="?ti" >Actualiser</a>
